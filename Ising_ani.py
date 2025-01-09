@@ -1,29 +1,21 @@
 import matplotlib.pyplot as plt
-from matplotlib import animation
-from matplotlib.animation import PillowWriter
+from matplotlib.animation import FuncAnimation, PillowWriter
 import numpy as np
 
-grid = np.zeros([10, 10, 10])
+dim = 10
+frames = 10
 
-dim = len(grid)
-
-for t in range(dim):
-    for i in range(dim):
-        for j in range(dim):
-            r = np.random.rand()
-            if r < 0.5:
-                grid[t, i, j] = 0
-            else:
-                grid[t, i, j] = 1
+grid = np.zeros((dim, dim))
 
 def animate(i):
-    ax.clear()
-    ax.imshow(grid[i])
-    ax.get_xaxis().set_ticks([])
-    ax.get_yaxis().set_ticks([])
+    grid = np.random.choice([0, 1], size = (dim, dim))
+    im = ax.imshow(grid, cmap = "bwr") 
 
     return fig
 
-fig, ax = plt.subplots()
-ani = animation.FuncAnimation(fig, animate, frames = 10)
+fig, ax = plt.subplots() 
+ax.get_xaxis().set_ticks([])
+ax.get_yaxis().set_ticks([])
+
+ani = FuncAnimation(fig, animate, frames = frames, interval = 200)
 ani.save("l_Ising.gif", writer = "pillow", fps = 5)
